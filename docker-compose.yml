@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    platform: linux/arm64
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - MAILHOG_HOST=mailhog
+      - MAILHOG_PORT=1025
+      - UNSTRUCTURED_API_KEY=${UNSTRUCTURED_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - mailhog
+
+  mailhog:
+    image: jcalonso/mailhog:latest
+    platform: linux/arm64
+    ports:
+      - "8025:8025"
+      - "1025:1025"
