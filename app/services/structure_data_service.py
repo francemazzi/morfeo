@@ -52,6 +52,25 @@ class StructureDataService:
                                 3. The unit of measurement (if present)
                                 4. The reference ranges (if present)
 
+                                Example Input:
+                                {{
+                                    "Descrizione esame": "FOLATI",
+                                    "Esiti": "3,15",
+                                    "Unità di misura": "ng/mL",
+                                    "Valori Normali": "3,1 - 20,5"
+                                }}
+
+                                Example Output:
+                                {{
+                                    "testName": "FOLATI",
+                                    "resultValue": "3,15",
+                                    "unitOfMeasure": "ng/mL",
+                                    "loincValue": "",
+                                    "belongingPanelLoincValue": "",
+                                    "referenceRangeLow": "3,1",
+                                    "referenceRangeHigh": "20,5"
+                                }}
+
                                 Return a valid JSON object with this exact structure:
                                 {{
                                     "testName": "The name of the test/examination",
@@ -70,8 +89,9 @@ class StructureDataService:
                                 - For ranges like "X", use X as both low and high
                                 - If no range is found, leave both empty
                                 - Keep the decimal separator as found in the input (comma or dot)
+                                - Keep the exact format of numbers as in the input (do not convert commas to dots or vice versa)
 
-                                Return ONLY the JSON object, no other text.[/INST]</s>"""
+                                Return ONLY the JSON object, no other text or explanation.[/INST]</s>"""
                     
                     try:
                         response = await self.llm.agenerate([prompt])

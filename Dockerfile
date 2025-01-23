@@ -1,22 +1,47 @@
 FROM python:3.11-slim
 
-WORKDIR /app
-
-# Installo le dipendenze di sistema
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    swig \
     tesseract-ocr \
     poppler-utils \
-    python3-poppler \
-    python3-poppler-qt5 \
-    libpoppler-cpp-dev \
-    pkg-config \
+    libgl1-mesa-glx \
+    build-essential \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
+WORKDIR /app
+
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY app/ app/
+COPY alembic.ini .
 
-COPY . .
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir \
+    fastapi>=0.109.0 \
+    uvicorn==0.24.0 \
+    python-dotenv==1.0.0 \
+    pydantic>=2.5.2,\<3.0.0 \
+    pydantic-settings>=2.1.0 \
+    python-multipart==0.0.6 \
+    pandas==2.1.3 \
+    pdf2image==1.16.3 \
+    pytesseract==0.3.10 \
+    opencv-python==4.8.1.78 \
+    beautifulsoup4>=4.12.0 \
+    lxml>=4.9.0 \
+    langchain-core>=0.3.31 \
+    langchain-community>=0.3.15 \
+    langchain-openai>=0.0.5 \
+    langchain-huggingface>=0.1.2 \
+    transformers>=4.38.2,\<4.49.0 \
+    torch==2.2.1 \
+    sentencepiece>=0.1.99 \
+    accelerate>=0.27.0 \
+    Pillow>=10.0.0 \
+    scikit-learn>=1.6.1 \
+    scipy>=1.15.1 \
+    sentence-transformers>=2.2.2 \
+    PyMuPDF==1.23.8
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"] 
+EXPOSE 8000
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
