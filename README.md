@@ -1,10 +1,7 @@
 # Morfeo - AI-Powered PDF Table Extractor
 
 <div align="center">
-  <img src="morfeo.jpg" alt="Morfeo Logo" width="300"/>
-</div>
-
-<div align="center">
+![Morfeo server image](./.github/assets/morfeo.jpg)
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)](https://www.python.org)
@@ -12,11 +9,9 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org)
 [![GPT-4](https://img.shields.io/badge/GPT--4-412991?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com)
 
+Morfeo is a powerful microservice designed to extract and analyze tables from PDF documents using cutting-edge AI technology. By combining llm Vision capabilities with advanced image processing, Morfeo can accurately identify, extract, and structure tabular data from any PDF document.
+
 </div>
-
-## 🎯 Overview
-
-Morfeo is a powerful microservice designed to extract and analyze tables from PDF documents using cutting-edge AI technology. By combining GPT-4 Vision capabilities with advanced image processing, Morfeo can accurately identify, extract, and structure tabular data from any PDF document.
 
 ## ✨ Key Features
 
