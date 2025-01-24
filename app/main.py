@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.endpoints import pdf
+from app.api.endpoints import data_extraction
 
 app = FastAPI(
     title="Morfeo API",
@@ -16,4 +16,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(pdf.router, prefix="/morfeo", tags=["pdf"]) 
+app.include_router(data_extraction.router, prefix="/morfeo", tags=["pdf"]) 

@@ -4,7 +4,6 @@ from fastapi import UploadFile
 from bs4 import BeautifulSoup
 import pandas as pd
 from pdf2image import convert_from_bytes
-import pytesseract
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage
 import os

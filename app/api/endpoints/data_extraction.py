@@ -30,6 +30,29 @@ async def extract_tables(files: List[UploadFile] = File(...)) -> Dict[str, Any]:
             )
     return await pdf_service.extract_tables_data(files)
 
+@router.post("/extract-data", response_model=List[Dict[str, Any]])
+async def extract_tables(files: List[UploadFile] = File(...)) -> List[Dict[str, Any]]:
+    """
+    Extract and structure data from medical files (PDF or images).
+    
+    Args:
+        files: List of files to process (PDF or images)
+        
+    Returns:
+        List of dictionaries containing structured medical data
+        
+    Raises:
+        HTTPException: If files are not in supported formats
+    """
+    allowed_extensions = ('.pdf', '.png', '.jpg', '.jpeg', '.tiff', '.bmp')
+    for file in files:
+        if not file.filename.lower().endswith(allowed_extensions):
+            raise HTTPException(
+                status_code=400, 
+                detail=f"All files must be PDF or images ({', '.join(allowed_extensions)})"
+            )
+    return await structure_service.process_medical_files(files)
+
 @router.post("/structure-clinical-data")
 async def structure_clinical_data(data: Dict[str, Any] = Body(...)) -> List[Dict[str, Any]]:
     """
@@ -65,7 +88,7 @@ async def structure_clinical_data(data: Dict[str, Any] = Body(...)) -> List[Dict
         HTTPException: Se i dati di input non sono nel formato corretto
     """
     try:
-        return await structure_service.clinical_report(data)
+        return await structure_service.clean_table_data_json(data)
     except Exception as e:
         raise HTTPException(
             status_code=500,
