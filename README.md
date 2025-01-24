@@ -10,13 +10,12 @@
 [![GPT-4](https://img.shields.io/badge/GPT--4-412991?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com)
 [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFAC2F?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co)
 
-Morfeo is a powerful microservice designed to extract and analyze medical laboratory reports using state-of-the-art AI technology. By combining GPT-4 Vision capabilities with Hugging Face models and advanced OCR processing, Morfeo can accurately identify, extract, and structure medical data from PDF documents and images.
+Morfeo is a powerful microservice designed to extract and analyze medical laboratory reports using state-of-the-art AI technology. By combining GPT capabilities with Hugging Face models and advanced OCR processing, Morfeo can accurately identify, extract, and structure medical data from PDF documents and images.
 
 </div>
 
 ## ✨ Key Features
 
-- 🔍 **Dual AI Processing**: Uses both GPT-4 Vision and Hugging Face models for robust data extraction
 - 📊 **Medical Data Structuring**: Converts medical reports into clean, standardized JSON format
 - 🎯 **Specialized Medical Analysis**: Focused on laboratory test results and reference ranges
 - 🔄 **Format Standardization**: Automatically converts numerical formats (e.g., comma to dot in decimals)
@@ -27,9 +26,7 @@ Morfeo is a powerful microservice designed to extract and analyze medical labora
 ## 🛠️ Tech Stack
 
 - **FastAPI**: Modern, fast web framework for building APIs
-- **GPT-4 Vision**: State-of-the-art AI for visual data extraction
-- **Hugging Face Models**: Additional AI processing capabilities
-- **Tesseract OCR**: Optical Character Recognition engine
+- **Langchain**: Framework for building LLM applications
 - **PDF2Image**: PDF to image conversion
 - **Docker**: Containerization for easy deployment
 - **Pydantic**: Data validation using Python type annotations
@@ -69,7 +66,7 @@ Morfeo is a powerful microservice designed to extract and analyze medical labora
 
    ```bash
    python -m venv venv
-   source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+   source venv/bin/activate
    pip install -r requirements.txt
    ```
 
@@ -133,12 +130,10 @@ The system works in three main steps:
 
 2. **Data Extraction**
 
-   - OCR processing with Tesseract
-   - Table structure recognition with GPT-4 Vision
+   - Table structure recognition with GPT-4o
    - Text extraction and formatting
 
 3. **Medical Data Analysis**
-   - Data structuring with Hugging Face models
    - Medical field identification
    - Reference range parsing
    - Unit standardization

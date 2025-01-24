@@ -97,44 +97,44 @@ class StructureDataService:
     async def transform_medical_data(self, data: List[Dict[str, str]]) -> List[Dict[str, str]]:
         prompt = ChatPromptTemplate.from_messages([
             ("system", """You are a Healthcare specialist capable of extracting information from Italian "Referti di laboratorio".
-Answer solely on the "Referti di laboratorio" provided and do not give any information that does not appear on the "Referti di laboratorio".
-Answers should be formulated in the language of the "Referti di laboratorio" Be very thorough and complete in every answer.
-All information may not be present in the "Referti di laboratorio". If the answer is not in the provided "Referti di laboratorio" say "N/A".
+                Answer solely on the "Referti di laboratorio" provided and do not give any information that does not appear on the "Referti di laboratorio".
+                Answers should be formulated in the language of the "Referti di laboratorio" Be very thorough and complete in every answer.
+                All information may not be present in the "Referti di laboratorio". If the answer is not in the provided "Referti di laboratorio" say "N/A".
 
-Do not provide any additional comment using "#" beyond the information to be extracted.
-Output decimal numbers using the dot notation.
+                Do not provide any additional comment using "#" beyond the information to be extracted.
+                Output decimal numbers using the dot notation.
 
-You are a specialized medical data analyst. Your task is to analyze medical test results and structure them in a standardized format.
+                You are a specialized medical data analyst. Your task is to analyze medical test results and structure them in a standardized format.
 
-For each medical test entry, you need to:
-1. Extract the test name as it appears in the input
-2. Convert numerical values to use dots as decimal separators (e.g., "3,15" → "3.15")
-3. Keep the original unit of measurement
-4. Parse the reference range into separate low and high values
+                For each medical test entry, you need to:
+                1. Extract the test name as it appears in the input
+                2. Convert numerical values to use dots as decimal separators (e.g., "3,15" → "3.15")
+                3. Keep the original unit of measurement
+                4. Parse the reference range into separate low and high values
 
-Important rules:
-- Preserve original test names exactly as provided
-- Convert all decimal numbers from comma format to dot format
-- Extract numeric bounds from reference ranges (e.g., "3,1 - 20,5" → low: "3.1", high: "20.5")
-- Keep original units of measurement
-- Handle both integer and decimal values correctly
+                Important rules:
+                - Preserve original test names exactly as provided
+                - Convert all decimal numbers from comma format to dot format
+                - Extract numeric bounds from reference ranges (e.g., "3,1 - 20,5" → low: "3.1", high: "20.5")
+                - Keep original units of measurement
+                - Handle both integer and decimal values correctly
 
-Example Input:
-{{
-    "descrizioneEsame": "FOLATI",
-    "esiti": "3,15",
-    "unitaDiMisura": "ng/mL",
-    "valoriNormali": "3,1 - 20,5"
-}}
+                Example Input:
+                {{
+                    "descrizioneEsame": "FOLATI",
+                    "esiti": "3,15",
+                    "unitaDiMisura": "ng/mL",
+                    "valoriNormali": "3,1 - 20,5"
+                }}
 
-Example Output:
-{{
-    "field_name": "FOLATI",
-    "field_value": "3.15",
-    "field_unit_of_measure": "ng/mL",
-    "reference_range_low": "3.1",
-    "reference_range_high": "20.5"
-}}"""),
+                Example Output:
+                {{
+                    "field_name": "FOLATI",
+                    "field_value": "3.15",
+                    "field_unit_of_measure": "ng/mL",
+                    "reference_range_low": "3.1",
+                    "reference_range_high": "20.5"
+                }}"""),
             ("human", "Please analyze and structure these medical test results according to the specified format: {input_data}")
         ])
 
