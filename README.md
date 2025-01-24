@@ -1,4 +1,4 @@
-# Morfeo - AI-Powered PDF Table Extractor
+# Morfeo - AI-Powered Medical Report Analyzer
 
 <div align="center">
 
@@ -7,32 +7,32 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)](https://www.python.org)
 [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org)
 [![GPT-4](https://img.shields.io/badge/GPT--4-412991?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com)
+[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFAC2F?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co)
 
-Morfeo is a powerful microservice designed to extract and analyze tables from PDF documents using cutting-edge AI technology. By combining llm Vision capabilities with advanced image processing, Morfeo can accurately identify, extract, and structure tabular data from any PDF document.
+Morfeo is a powerful microservice designed to extract and analyze medical laboratory reports using state-of-the-art AI technology. By combining GPT-4 Vision capabilities with Hugging Face models and advanced OCR processing, Morfeo can accurately identify, extract, and structure medical data from PDF documents and images.
 
 </div>
 
 ## ✨ Key Features
 
-- 🔍 **Intelligent Table Detection**: Uses GPT-4 Vision to identify and extract tables with high accuracy
-- 📊 **Structured Data Output**: Converts PDF tables into clean, structured JSON format
-- 🚀 **High Performance**: Processes PDFs quickly and efficiently
-- 🔄 **RESTful API**: Simple and intuitive API endpoints
-- 📦 **Containerized**: Easy deployment with Docker
-- 📧 **Email Integration**: Built-in email notifications with MailHog
-- 🗄️ **Persistent Storage**: Automatic storage in PostgreSQL database
+- 🔍 **Dual AI Processing**: Uses both GPT-4 Vision and Hugging Face models for robust data extraction
+- 📊 **Medical Data Structuring**: Converts medical reports into clean, standardized JSON format
+- 🎯 **Specialized Medical Analysis**: Focused on laboratory test results and reference ranges
+- 🔄 **Format Standardization**: Automatically converts numerical formats (e.g., comma to dot in decimals)
+- 🚀 **High Performance**: Processes documents quickly with optimized image processing
+- 📝 **Smart OCR**: Enhanced OCR capabilities with Tesseract
+- 🌐 **RESTful API**: Simple and intuitive API endpoints
 
 ## 🛠️ Tech Stack
 
 - **FastAPI**: Modern, fast web framework for building APIs
-- **PostgreSQL**: Robust database for storing extraction results
-- **SQLAlchemy**: Powerful SQL toolkit and ORM
 - **GPT-4 Vision**: State-of-the-art AI for visual data extraction
+- **Hugging Face Models**: Additional AI processing capabilities
+- **Tesseract OCR**: Optical Character Recognition engine
+- **PDF2Image**: PDF to image conversion
 - **Docker**: Containerization for easy deployment
 - **Pydantic**: Data validation using Python type annotations
-- **MailHog**: Email testing tool for development
 
 ## 🚀 Quick Start
 
@@ -40,7 +40,8 @@ Morfeo is a powerful microservice designed to extract and analyze tables from PD
 
 - Docker and Docker Compose
 - OpenAI API Key
-- Unstructured API Key
+- Hugging Face API Token
+- Python 3.11+
 
 ### Installation
 
@@ -60,49 +61,46 @@ Morfeo is a powerful microservice designed to extract and analyze tables from PD
    Edit `.env` with your API keys:
 
    ```
-   DATABASE_URL=postgresql://postgres:postgres@db:5432/pdf_extractor
-   MAILHOG_HOST=mailhog
-   MAILHOG_PORT=1025
-   UNSTRUCTURED_API_KEY=your_unstructured_api_key
    OPENAI_API_KEY=your_openai_api_key
+   HUGGINGFACEHUB_API_TOKEN=your_huggingface_token
    ```
 
-3. Start the services:
+3. Install dependencies:
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+4. Run with Docker:
    ```bash
    docker-compose up -d
+   ```
+   Or locally:
+   ```bash
+   uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
    ```
 
 ## 🎮 Usage
 
-### Extract Tables from PDF
+### Extract Medical Data from PDF/Images
 
 ```bash
-curl -X POST "http://localhost:8000/api/v1/pdf/extract/" \
+curl -X POST "http://localhost:8000/api/v1/extract-medical-data" \
   -H "accept: application/json" \
   -H "Content-Type: multipart/form-data" \
-  -F "file=@document.pdf"
+  -F "files=@report.pdf"
 ```
 
-### Get All Extractions
+### Extract Tables Only
 
 ```bash
-curl -X GET "http://localhost:8000/api/v1/pdf/extractions/" \
-  -H "accept: application/json"
+curl -X POST "http://localhost:8000/api/v1/extract-tables" \
+  -H "accept: application/json" \
+  -H "Content-Type: multipart/form-data" \
+  -F "files=@report.pdf"
 ```
-
-### Get Specific Extraction
-
-```bash
-curl -X GET "http://localhost:8000/api/v1/pdf/extraction/1" \
-  -H "accept: application/json"
-```
-
-## 🌐 Services
-
-- **API**: [http://localhost:8000](http://localhost:8000)
-- **API Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
-- **MailHog UI**: [http://localhost:8025](http://localhost:8025)
-- **PostgreSQL**: localhost:5432
 
 ## 📁 Project Structure
 
@@ -111,16 +109,12 @@ curl -X GET "http://localhost:8000/api/v1/pdf/extraction/1" \
 ├── app/
 │   ├── api/
 │   │   └── endpoints/
-│   │       └── pdf.py
+│   │       └── data_extraction.py
 │   ├── core/
-│   │   ├── config.py
-│   │   └── database.py
-│   ├── models/
-│   │   └── pdf.py
-│   ├── schemas/
-│   │   └── pdf.py
+│   │   └── config.py
 │   ├── services/
-│   │   └── pdf_service.py
+│   │   ├── ocr_service.py
+│   │   └── structure_data_service.py
 │   └── main.py
 ├── docker-compose.yml
 ├── Dockerfile
@@ -128,34 +122,57 @@ curl -X GET "http://localhost:8000/api/v1/pdf/extraction/1" \
 └── README.md
 ```
 
-## How to run the project
+## 🔧 Architecture
 
-Step 1:
+The system works in three main steps:
 
-```
-python -m venv venv
-```
+1. **Document Processing**
 
-Step 2:
+   - PDF to image conversion
+   - High-quality image extraction (800 DPI)
 
-```
-source venv/bin/activate
-```
+2. **Data Extraction**
 
-Step 3:
+   - OCR processing with Tesseract
+   - Table structure recognition with GPT-4 Vision
+   - Text extraction and formatting
 
-```
-pip install -r requirements.txt
+3. **Medical Data Analysis**
+   - Data structuring with Hugging Face models
+   - Medical field identification
+   - Reference range parsing
+   - Unit standardization
 
-```
+## 📋 TODO & Future Improvements
 
-## How to run the server
+1. **Prompt Customization System**
 
-```
+   - Implement user interface for custom prompt input
+   - Create a collection system for effective prompts
+   - Build a training dataset from the first 10-20 users' interactions
 
-uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+2. **Entity Management**
 
-```
+   - Add entity management system (e.g., "Pie APC")
+   - Implement custom entity parser
+   - Create entity mapping database
+
+3. **Advanced Optimizations**
+
+   - Integrate AGRF agent for Lumin Thinking control
+   - Enhance result validation system
+   - Implement continuous learning feedback system
+
+4. **Architectural Improvements**
+
+   - Optimize document processing flow
+   - Implement caching system for frequent requests
+   - Improve error handling and recovery
+
+5. **Data Collection and Analysis**
+   - Implement performance tracking system
+   - Create results analysis dashboard
+   - Optimize models based on collected data
 
 ## 📝 License
 
