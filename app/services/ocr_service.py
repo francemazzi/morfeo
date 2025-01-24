@@ -13,6 +13,7 @@ import json
 import fitz
 import logging
 from app.core.config import settings
+from fastapi import HTTPException
 
 class PDFService:
     async def extract_tables_data(self, files: List[UploadFile]) -> Dict[str, Any]:
@@ -37,20 +38,20 @@ class PDFService:
             logging.error(f"Errore durante l'estrazione delle tabelle: {str(e)}")
             raise
 
-    def _pdf_to_images(self, file_content: bytes, dpi: int = 600) -> List[BytesIO]:
+    def _pdf_to_images(self, file_content: bytes, dpi: int = 800) -> List[BytesIO]:
         try:
             images = convert_from_bytes(file_content, dpi=dpi)
             
             image_buffers = []
             for image in images:
                 img_buffer = BytesIO()
-                image.save(img_buffer, format='PNG')
+                image.save(img_buffer, format='PNG', quality=100)
                 img_buffer.seek(0)
                 image_buffers.append(img_buffer)
             
             return image_buffers
         except Exception as e:
-            logging.error(f"Errore nella conversione del PDF in immagini: {e}")
+            logging.error(f"Error converting PDF to images: {e}")
             raise
 
     def _images_to_data_urls(self, image_buffers: List[BytesIO]) -> List[str]:
@@ -119,10 +120,14 @@ class PDFService:
             messages = [
                 {
                     "role": "system",
-                    "content": """You are a table extraction expert. Your task is to:
-                    1. Identify and extract ALL tables from the document
+                    "content": """You are a medical laboratory report analysis expert. Your task is to:
+                    1. Identify and extract ALL tables from the medical report
                     2. Preserve the exact structure and content of each table
-                    3. Return the data in this format:
+                    3. Pay special attention to reference ranges and units of measurement
+                    4. Ensure ALL cells are captured, even if they appear empty or unclear
+                    5. Double-check all numeric ranges columns
+
+                    Return the data in this format:
                     {
                         "tables": [
                             {
@@ -135,19 +140,21 @@ class PDFService:
                             }
                         ]
                     }
-                    Important:
-                    - Return ONLY valid JSON, no markdown or other formatting
-                    - Maintain exact text as it appears in the tables
-                    - Include ALL tables found in the document
-                    - Preserve the original structure and order of columns
-                    - Do not interpret or modify the data"""
+
+                    Important rules:
+                    - Extract ALL text exactly as it appears
+                    - Preserve ALL reference ranges, especially numeric ranges
+                    - Include ALL units of measurement
+                    - If a cell appears empty but might contain data, try to enhance and recheck
+                    - Pay special attention to faint or low-contrast text
+                    - Verify that numeric ranges are complete and accurate"""
                 }
             ]
 
             user_content = [
                 {
                     "type": "text",
-                    "text": "Extract all tables from these images, maintaining their exact structure and content. Return ONLY valid JSON."
+                    "text": "Extract all tables from these medical laboratory report images. Pay special attention to reference ranges and ensure all cells are captured accurately."
                 }
             ]
 
@@ -157,16 +164,27 @@ class PDFService:
             messages.append({"role": "user", "content": user_content})
 
             llm = ChatOpenAI(
-                model="gpt-4o-mini",  
+                model="gpt-4o",  
                 api_key=settings.OPENAI_API_KEY,
                 max_tokens=4096,
                 temperature=0,
-                timeout=600
+                timeout=120,
+                request_timeout=120.0
             )
             
-            response = await llm.ainvoke(messages)
-            logging.info("Risposta ricevuta dal modello")
-            return self._process_llm_response(response.content)
+            try:
+                response = await asyncio.wait_for(
+                    llm.ainvoke(messages),
+                    timeout=180.0
+                )
+                logging.info("Response received from model")
+                return self._process_llm_response(response.content)
+            except asyncio.TimeoutError:
+                logging.error("Timeout during model call")
+                raise HTTPException(
+                    status_code=504,
+                    detail="Request timeout while processing images"
+                )
         
         except Exception as e:
             logging.error(f"Errore durante il parsing delle tabelle: {str(e)}")

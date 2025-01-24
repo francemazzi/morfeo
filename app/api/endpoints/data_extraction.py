@@ -30,7 +30,7 @@ async def extract_tables(files: List[UploadFile] = File(...)) -> Dict[str, Any]:
             )
     return await pdf_service.extract_tables_data(files)
 
-@router.post("/extract-data", response_model=List[Dict[str, Any]])
+@router.post("/extract-medical-data", response_model=List[Dict[str, Any]])
 async def extract_tables(files: List[UploadFile] = File(...)) -> List[Dict[str, Any]]:
     """
     Extract and structure data from medical files (PDF or images).
