@@ -20,7 +20,6 @@ Morfeo is a powerful microservice designed to extract and analyze medical labora
 - 🎯 **Specialized Medical Analysis**: Focused on laboratory test results and reference ranges
 - 🔄 **Format Standardization**: Automatically converts numerical formats (e.g., comma to dot in decimals)
 - 🚀 **High Performance**: Processes documents quickly with optimized image processing
-- 📝 **Smart OCR**: Enhanced OCR capabilities with Tesseract
 - 🌐 **RESTful API**: Simple and intuitive API endpoints
 
 ## 🛠️ Tech Stack
@@ -145,6 +144,7 @@ The system works in three main steps:
    - Implement user interface for custom prompt input
    - Create a collection system for effective prompts
    - Build a training dataset from the first 10-20 users' interactions
+   - 📝 **Smart OCR**: Enhanced OCR capabilities with Tesseract
 
 2. **Entity Management**
 
