@@ -7,7 +7,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)](https://www.python.org)
 [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com)
-[![GPT-4](https://img.shields.io/badge/GPT--4-412991?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com)
+[![GPT](https://img.shields.io/badge/GPT--4-412991?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com)
 [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFAC2F?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co)
 
 Morfeo is a powerful microservice designed to extract and analyze medical laboratory reports using state-of-the-art AI technology. By combining GPT capabilities with Hugging Face models and advanced OCR processing, Morfeo can accurately identify, extract, and structure medical data from PDF documents and images.
