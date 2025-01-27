@@ -33,7 +33,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         fastapi>=0.109.0 \
         uvicorn==0.24.0 \
         python-dotenv==1.0.0 \
-        python-multipart==0.0.6 && break || sleep 15; \
+        python-multipart==0.0.6 \
+        beautifulsoup4>=4.12.0 \
+        lxml>=4.9.0 \
+        aiohttp>=3.9.0 && break || sleep 15; \
     done
 
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -44,7 +47,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         pytesseract==0.3.10 \
         opencv-python==4.8.1.78 \
         Pillow>=10.0.0 \
-        PyMuPDF==1.23.8 && break || sleep 15; \
+        PyMuPDF==1.23.8 \
+        requests>=2.31.0 && break || sleep 15; \
     done
 
 RUN --mount=type=cache,target=/root/.cache/pip \
