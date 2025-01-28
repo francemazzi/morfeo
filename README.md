@@ -75,7 +75,7 @@ Morfeo is a powerful microservice designed to extract and analyze medical labora
    ```
    Or locally:
    ```bash
-   uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+   uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
    ```
 
 ## 🎮 Usage
@@ -83,7 +83,7 @@ Morfeo is a powerful microservice designed to extract and analyze medical labora
 ### Extract Medical Data from PDF/Images
 
 ```bash
-curl -X POST "http://localhost:8000/api/v1/extract-medical-data" \
+curl -X POST "http://localhost:8080/api/v1/extract-medical-data" \
   -H "accept: application/json" \
   -H "Content-Type: multipart/form-data" \
   -F "files=@report.pdf"
@@ -92,7 +92,7 @@ curl -X POST "http://localhost:8000/api/v1/extract-medical-data" \
 ### Extract Tables Only
 
 ```bash
-curl -X POST "http://localhost:8000/api/v1/extract-tables" \
+curl -X POST "http://localhost:8080/api/v1/extract-tables" \
   -H "accept: application/json" \
   -H "Content-Type: multipart/form-data" \
   -F "files=@report.pdf"

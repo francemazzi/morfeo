@@ -22,17 +22,8 @@ class MedicalDataResponse(BaseModel):
 
 class StructureDataService:
     def __init__(self):
-        # self.llm = HuggingFaceEndpoint(
-        #     repo_id="deepseek-ai/DeepSeek-R1",
-        #     task="text-generation",
-        #     max_new_tokens=512,
-        #     temperature=0.1,
-        #     top_p=0.95,
-        #     repetition_penalty=1.15,
-        #     huggingfacehub_api_token=settings.HUGGING_FACE_HUB_TOKEN
-        # )
         self.chat_llm = ChatOpenAI(
-            model="gpt-4",
+            model="gpt-4o",
             temperature=0,
             api_key=settings.OPENAI_API_KEY
         )
